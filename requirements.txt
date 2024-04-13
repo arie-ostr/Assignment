@@ -1,7 +1,4 @@
 pytest
 pytest-timeout
-numpy
-pandas
 selenium
-requests
 webdriver_manager
