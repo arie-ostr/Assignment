@@ -1,0 +1,13 @@
+
+[
+    {
+        "account_id" : "checksum@percepti.co",
+        "password" : "checksum@percepti.co",
+        "account_type": "test"
+    },
+    {
+        "account_id" : "checking@percepti.co",
+        "password" : "checking@percepti.co",
+        "account_type": "test"
+    }
+]
