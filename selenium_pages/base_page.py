@@ -42,13 +42,13 @@ class BasePage:
         """
         Hides the Bys, not relevant for the assignment.
         """
-        self.driver.find_element(By.CSS_SELECTOR, css_selector)
+        return self.driver.find_element(By.CSS_SELECTOR, css_selector)
 
     def get_elems(self, css_selector):
         """
         Hides the Bys, not relevant for the assignment.
         """
-        self.driver.find_elements(By.CSS_SELECTOR, css_selector)
+        return self.driver.find_elements(By.CSS_SELECTOR, css_selector)
 
     def get_visible_elem_while_waiting(self, css_selector, wait_time_seconds=4):
         """
@@ -115,3 +115,9 @@ class BasePage:
                 f"Failed to locate {result_css} after clicking {btn_css}"
             )
 
+    def scroll_to_elem(self,elem):
+        """
+        moves element into view
+        """
+        actions = ActionChains(self.driver)
+        actions.move_to_element(elem).perform()

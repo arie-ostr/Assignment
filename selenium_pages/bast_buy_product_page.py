@@ -1,5 +1,6 @@
 from selenium_pages.base_page import BasePage
-
+from selenium.webdriver.common.action_chains import ActionChains
+import time
 
 class BestBuyProductPage(BasePage):
     def __init__(self, driver=None):
@@ -24,9 +25,12 @@ class BestBuyProductPage(BasePage):
 
     # Q&A - user generated questions
     qna_drawer_btn = ".user-generated-content-question-distillation button"
-    qna_container = "user-generated-content-question-distillation"
+    qna_container = ".user-generated-content-question-distillation"
     qna_close_btn = f"{qna_container} [aria-label='Close']"
-    qna_details_section = f"{qna_container} .pdp-drawer-content"
+    qna_details_section = f"{qna_container} [data-testid='drawer']"
+
+    #to handle survey before it flakes tests
+    survey_close_btn = "#survey_invite_no"
 
     @staticmethod
     def open_independently(url):
@@ -41,6 +45,8 @@ class BestBuyProductPage(BasePage):
         page_instance.get_elems_while_waiting(
             BestBuyProductPage.primary_product_image, 10
         )
+
+
 
         return page_instance
 
@@ -64,7 +70,7 @@ class BestBuyProductPage(BasePage):
         )
 
         text = features_content_elem.text
-
+        # I confirmed this manually.
         self.click(self.features_overlay_close_btn)
 
         return text
@@ -77,18 +83,22 @@ class BestBuyProductPage(BasePage):
             self.specs_drawer_btn, self.specs_drawer_details_section
         )
         text = specs_content_elem.text
-        self.click(self.specs_overlay_close_btn)
 
+        self.click(self.specs_overlay_close_btn)
         return text
 
     def get_qna_text(self):
         """
         extracts text from product user generated q&a section
         """
+        
+        btn = self.get_elem(self.qna_drawer_btn)
+        self.scroll_to_elem(btn)
+
         qna_content_elem = self.click_and_wait_for(
             self.qna_drawer_btn, self.qna_details_section
         )
-
+                
         text = qna_content_elem.text
 
         self.click(self.qna_close_btn)

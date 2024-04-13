@@ -31,12 +31,19 @@ This would allow for efficient maintainable & clean tests given the limited scop
 A utility module in python will prodive a webdriver, a secrets module will provide test users
 There isn't any test data associated with any page (like product names) within the assignment - not implementing.
 
+## Known issues with the solution:
+Q&A section contents seems to pull feature contents, not sure why..
+browser sessions aren't shared across - significantly slowing down test
+no logging and no reporting. 
+User Login section in the assignment were blocked due to Best Buy issue.
 
 
 
 ## Understanding of the best buy site:
 Built with react and a whole lot of JS frameworks (wapalizer) 
 Not an off-the-shelf solution (so it seems)
+There is an annoying survey popup that crashes tests. 
+ but it disappears from DOM quickly so I failed to capture the right flow to make sure it's closed. we can also use pytest-retry plugin for this. but it's not the best practice.
 
 
 ## Viable suggestions for further development
@@ -52,8 +59,3 @@ If I would think of the assignment as a personal project I would:
 7. Parametrize across different users and products with a select set of test cases 
     Test data to be modeled in a way that associates with each page, but not attached to it
     - product data most notably.
-
-**Test Cases** 
-TODO : add top 5.
-1. Purchase flow
-2. Product addition flow. 
