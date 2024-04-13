@@ -15,7 +15,7 @@ class BestBuyMainPage(BasePage):
     #elem lists:
     search_suggestion_container = "#suggestViewClientComponent"
     search_suggestion_result_listings = f"{search_suggestion_container} a span[data-testid='Highlighter']"
-    search_suggestion_results_products = f"{search_suggestion_container} li[data-testid='related-product-SR-list']"
+    search_suggestion_results_products = f"{search_suggestion_container} ul[data-testid='related-product-SR-list'] li"
 
     def __init__(self,driver):
         super().__init__(driver)
@@ -51,7 +51,9 @@ class BestBuyMainPage(BasePage):
 
     def get_search_preview_results_elems(self,search_string):
         """
-        returns titles of searched items
+        gets the actual elems for search terms in best buy
+        typically longer list of searchterms
+        and 5 products or so when hovering on search term.
         """
         self.execute_search(search_string)
         elems = self.get_elems_while_waiting(self.search_suggestion_result_listings,2)
@@ -64,15 +66,20 @@ class BestBuyMainPage(BasePage):
         elems = self.get_search_preview_results_elems(search_string)
         return [elem.text for elem in elems]
     
-    def hover_on_search_elems_verify_change(self,elems_list):
+    def hover_on_search_elems_get_changs(self,elems_list):
         """
         Takes ready made elems list and hovers on it. 
+
+        Compares the HTML in product results
+        This way we can capture hrefs, text etc.
         """
         product_result_htmls = []
         for elem in elems_list:
             self.hover_on(elem)
-            self.get_elem()
             prudct_results = self.get_elems_while_waiting(
                 self.search_suggestion_results_products,3)
-            hrefs = [elem.get_attribute("innerHTML") for elem in prudct_results]
-            product_result_hrefs.append(hrefs)
+            html_contents = [elem.get_attribute("innerHTML") for elem in prudct_results]
+            product_result_htmls.append(html_contents)
+        
+        
+        return product_result_htmls

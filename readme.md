@@ -3,14 +3,19 @@ I must perform checks on elements within the flow of searching for a product.
 
 ## How to run this project:
 Make sure to have python3.12
-This Project comes bundles with the .venv directory to save time! 
 On mac/linux:
 ```bash
-source .venv/bin/activate 
+python3 --version
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 On Windows:
 ```bash
+python --version
+python -m venv .venv
 .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
 Then run 

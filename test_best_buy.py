@@ -1,6 +1,7 @@
 import pytest
 from selenium_pages.best_buy_page import BestBuyMainPage
-
+from selenium_pages.bast_buy_product_page import BestBuyProductPage
+from utils import misc_utils
 
 @pytest.mark.smoke
 def test_bestbuy_navigate():
@@ -63,31 +64,49 @@ def test_change_of_products_content_after_hover_on_resut(search_term):
     Note2: We will use InnerHTML to implement this quickly. 
     """
     page = BestBuyMainPage.open_independently()
-    page.get_search_preview_results_names_for(search_term)
+    search_results_elems = page.get_search_preview_results_elems(search_term)
+    products_results= page.hover_on_search_elems_get_changs(search_results_elems)
+
+    # need better logging
+    assert not misc_utils.n_lists_of_lists_are_same(
+        products_results), "found two search results that don't change"
 
 
+test_data = {
+    "hello neighbor game": (
+        "https://www.bestbuy.com/site/hello-neighbor-nintendo-switch/6203184.p?skuId=6203184&intl=nosplash"
+    ),
+    "hello neighbor 2 game, switch": (
+        "https://www.bestbuy.com/site/hello-neighbor-2-standard-edition-xbox-series-x/6505081.p?skuId=6505081&intl=nosplash"
+    ),
+    "hello kitty and friends":(
+        "https://www.bestbuy.com/site/razer-hello-kitty-edition-wired-optical-gaming-mouse-with-deathadder-essential-and-goliathus-mouse-pad-medium-pink/6496626.p?skuId=6496626&intl=nosplash"
+        ),
+    "hello kitty iphone 15 pro cover" : (
+        "https://www.bestbuy.com/site/sonix-magsafe-case-for-apple-iphone-15-pro-hello-kitty-cosmic-multiple-colors/6563272.p?skuId=6563272&intl=nosplash"
+    )
+    }
 
-# given :user logged in 
-# when :user searches "hello" , search string.
-# then : search page opens, all results contain "hello kitty" (arbitrary).
+@pytest.mark.parametrize("url", test_data.values(),ids=test_data.keys())
+def test_test_products_page(url):
+    """
+    Given a product page
+    When user navigates to product page
+    Then certain constraints are satisfied. 
+    """
 
-# given: login data
-# when:  user logs in best buy
-# then: Login page loads
+    #open page, get price
+    page = BestBuyProductPage.open_independently(url)
+    get_price_text_size = page.get_price_text_size()
+    err_str = f"expecting {get_price_text_size} to be 30px"
+    assert get_price_text_size == "30px" , err_str
 
+    #pull  texts and assert.
+    features_text = page.get_features_text()
+    assert "Aryeh" in features_text
 
+    specs_text = page.get_specs_text()
+    assert "Aryeh" in specs_text
 
-# given : User has searched for hello kitty & sees search results
-# when : user hovers between search results 
-# then : Search results value changes (in any way)
-
-#Test: User clicks on first product
-# Given logged in user, search page, when: user clicks on product in serch page then: this page opens. 
-
-#---- Product page
-#Test : Product page conditions:
-#  Price on first page
-#  Text size 30px 
-
-
-# Test : Accordion state has required features
+    qna_text = page.get_qna_text()
+    assert "Aryeh" in qna_text

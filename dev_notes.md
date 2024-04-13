@@ -44,3 +44,16 @@ I have implemented the search step using the POM
 Doing the test with elements hovering. 
 Recalled that a good selenium practice is adding innerHTML contents to a text file
 This allows to conviniently search for locators without using (the heavy) devtools
+
+
+# 16:10 
+Finished the hover test
+
+## 16:33
+After returning to the products - I found some with the old specs accordion
+I have earlier reported a change where it was a button
+But I guess there are two different ways to deal with this in best buy UI.
+
+## 18:17
+Finishing the selenium aspetcs of the tests, some stuff to fine tune
+but I want to commit the results to a repo first because time is way out!
